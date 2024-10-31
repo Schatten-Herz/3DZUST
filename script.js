@@ -23,23 +23,23 @@ const textureLoader = new THREE.TextureLoader()
 
 // const matcapTexture = textureLoader.load('/src/assets/textures/matcaps/8.png')
 
-const doorColorTexture = textureLoader.load('/src/assets/textures/door/color.jpg');
-const doorAlphaTexture = textureLoader.load('/src/assets/textures/door/alpha.jpg');
-const doorHeightTexture = textureLoader.load('/src/assets/textures/door/height.jpg');
-const doorNormalTexture = textureLoader.load('/src/assets/textures/door/normal.jpg');
-const doorAmbientOcclusionTexture = textureLoader.load('/src/assets/textures/door/ambientOcclusion.jpg');
-const doorMetalnessTexture = textureLoader.load('/src/assets/textures/door/metalness.jpg');
-const doorRoughnessTexture = textureLoader.load('/src/assets/textures/door/roughness.jpg');
+const doorColorTexture = textureLoader.load('/src/assets/textures/door/color.jpg')
+const doorAlphaTexture = textureLoader.load('/src/assets/textures/door/alpha.jpg')
+const doorHeightTexture = textureLoader.load('/src/assets/textures/door/height.jpg')
+const doorNormalTexture = textureLoader.load('/src/assets/textures/door/normal.jpg')
+const doorAmbientOcclusionTexture = textureLoader.load('/src/assets/textures/door/ambientOcclusion.jpg')
+const doorMetalnessTexture = textureLoader.load('/src/assets/textures/door/metalness.jpg')
+const doorRoughnessTexture = textureLoader.load('/src/assets/textures/door/roughness.jpg')
 
-const bricksColorTexture = textureLoader.load('/src/assets/textures/bricks/color.jpg');
-const bricksAmbientOcclusionTexture = textureLoader.load('/src/assets/textures/bricks/ambientOcclusion.jpg');
-const bricksNormalTexture = textureLoader.load('/src/assets/textures/bricks/normal.jpg');
-const bricksRoughnessTexture = textureLoader.load('/src/assets/textures/bricks/roughness.jpg');
+const bricksColorTexture = textureLoader.load('/src/assets/textures/bricks/color.jpg')
+const bricksAmbientOcclusionTexture = textureLoader.load('/src/assets/textures/bricks/ambientOcclusion.jpg')
+const bricksNormalTexture = textureLoader.load('/src/assets/textures/bricks/normal.jpg')
+const bricksRoughnessTexture = textureLoader.load('/src/assets/textures/bricks/roughness.jpg')
 
-const grassColorTexture = textureLoader.load('/src/assets/textures/grass/color.jpg');
-const grassAmbientOcclusionTexture = textureLoader.load('/src/assets/textures/grass/ambientOcclusion.jpg');
-const grassNormalTexture = textureLoader.load('/src/assets/textures/grass/normal.jpg');
-const grassRoughnessTexture = textureLoader.load('/src/assets/textures/grass/roughness.jpg');
+const grassColorTexture = textureLoader.load('/src/assets/textures/grass/color.jpg')
+const grassAmbientOcclusionTexture = textureLoader.load('/src/assets/textures/grass/ambientOcclusion.jpg')
+const grassNormalTexture = textureLoader.load('/src/assets/textures/grass/normal.jpg')
+const grassRoughnessTexture = textureLoader.load('/src/assets/textures/grass/roughness.jpg')
 
 grassColorTexture.repeat.set(8,8)
 grassAmbientOcclusionTexture.repeat.set(8,8)
@@ -170,7 +170,7 @@ const scene = new THREE.Scene()
 
 
 //fog
-const fog = new THREE.Fog('#262837',1,10)
+const fog = new THREE.Fog('#262837',1,15)
 scene.fog = fog
 
 
@@ -255,9 +255,6 @@ plane.geometry.setAttribute(              //uv处理
     'uv2',
     new THREE.Float32BufferAttribute(plane.geometry.attributes.uv.array,2)
 )
-plane.castShadow = false
-plane.receiveShadow = true
-
 plane.rotation.x =- Math.PI / 2
 // plane.position.y = -0.5
 scene.add(plane)
@@ -358,6 +355,10 @@ for( let i = 0; i < 50 ;i++){
 
     grave.rotation.y = (Math.random() - 0.5) * 0.4
     grave.rotation.z = (Math.random() - 0.5) * 0.1
+
+    grave.castShadow = true
+    grave.receiveShadow = true
+
     graves.add(grave)
 }
 
@@ -392,7 +393,7 @@ directionalLightCameraHelper.visible = false
 scene.add(directionalLightCameraHelper)
 
 
-const doorLight = new THREE.PointLight('#ff7d46', 3,7)
+const doorLight = new THREE.PointLight('#ff7d46', 5,7)
 doorLight.position.set(0,2.1,2.7)
 scene.add(doorLight)
 
@@ -498,6 +499,22 @@ GUI
 //     })
 
 
+/*
+Ghost
+ */
+const ghost = new THREE.PointLight('#ff00ff',10,3)
+ghost.position.y = 3
+scene.add(ghost)
+
+const ghost2 = new THREE.PointLight('#00ffff',10,3)
+ghost2.position.y = 3
+scene.add(ghost2)
+
+const ghost3 = new THREE.PointLight('#ff0000',10,3)
+ghost3.position.y = 3
+scene.add(ghost3)
+
+
 
 //axes helper
 // const axesHelper = new THREE.AxesHelper()
@@ -560,9 +577,31 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width,sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.antialias = true
-renderer.shadowMap.enabled = false
+renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
 renderer.setClearColor('#282637')
+
+
+//Shadow
+directionalLight.castShadow = true
+doorLight.castShadow = true
+ghost.castShadow = true
+ghost2.castShadow = true
+ghost3.castShadow = true
+
+walls.castShadow = true
+walls.receiveShadow = true
+
+bush.castShadow = true
+bush.receiveShadow = true
+bush2.castShadow = true
+bush2.receiveShadow = true
+bush3.castShadow = true
+bush3.receiveShadow = true
+
+plane.castShadow = false
+plane.receiveShadow = true
+
 
 // //Time
 // let time = Date.now()
@@ -592,16 +631,20 @@ const tick = () =>{
     // sphereShadow.position.z = sphere.position.z
     // sphereShadow.material.opacity = (1 - sphere.position.y) * 0.3
 
-    //物体动画
-    // cube.rotation.y = Math.sin(elapsedTime) /2
-    // cube.rotation.x = Math.cos(elapsedTime) /2
-    // sphere.rotation.y = 0.2 * elapsedTime
-    // plane.rotation.y = 0.2 * elapsedTime
-    // torus.rotation.y = 0.2 * elapsedTime
+    const ghostAngle = elapsedTime * 0.5
+    ghost.position.x = Math.cos(ghostAngle) * 4
+    ghost.position.z = Math.sin(ghostAngle) * 4
+    ghost.position.y = Math.sin(ghostAngle * 3)
 
-    // sphere.rotation.x = 0.15 * elapsedTime
-    // plane.rotation.x = 0.15 * elapsedTime
-    // torus.rotation.x = 0.15 * elapsedTime
+    const ghost2Angle = -elapsedTime * 0.32
+    ghost2.position.x = Math.cos(ghost2Angle) * 5
+    ghost2.position.z = Math.sin(ghost2Angle) * 5
+    ghost2.position.y = Math.sin(ghost2Angle * 4) + Math.sin(elapsedTime * 2.5)
+
+    const ghost3Angle = -elapsedTime * 0.24
+    ghost3.position.x = Math.cos(ghost3Angle) * (7 + Math.sin(elapsedTime * 0.32))
+    ghost3.position.z = Math.sin(ghost3Angle) * (7 + Math.sin(elapsedTime * 0.5))
+    ghost3.position.y = Math.sin(ghost3Angle * 4) + Math.sin(elapsedTime * 2.5)
 
     // camera.lookAt(cube1.position)
 

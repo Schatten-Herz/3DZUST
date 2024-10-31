@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="45357efd-26f8-4c03-92f7-8dfcbfe226f5" name="更改" comment="1">
-      <change afterPath="$PROJECT_DIR$/src/assets/models/Room/Fr6.glb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/script.js" afterDir="false" />
     </list>
@@ -126,7 +125,8 @@
       <workItem from="1730113477183" duration="490000" />
       <workItem from="1730114163424" duration="570000" />
       <workItem from="1730115681892" duration="49000" />
-      <workItem from="1730177907031" duration="6881000" />
+      <workItem from="1730177907031" duration="9935000" />
+      <workItem from="1730348665891" duration="258000" />
     </task>
     <task id="LOCAL-00001" summary="1">
       <option name="closed" value="true" />
@@ -336,7 +336,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729995659427</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="1">
+      <option name="closed" value="true" />
+      <created>1730190724093</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1730190724093</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
