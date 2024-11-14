@@ -1,3 +1,6 @@
+### Node.js ###
+node_modules/
+
 ### IntelliJ IDEA ###
 out/
 !**/src/main/**/out/
@@ -31,5 +34,3 @@ bin/
 ### Vercel ###
 .vercel
 
-### Node.js ###
-node_modules/
