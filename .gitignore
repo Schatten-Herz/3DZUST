@@ -27,4 +27,9 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Vercel ###
 .vercel
+
+### Node.js ###
+node_modules/
