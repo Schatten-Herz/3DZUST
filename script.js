@@ -10,124 +10,44 @@ import { FontLoader} from "three/addons";
 import { TextGeometry} from "three/addons";
 import {RectAreaLightHelper} from "three/addons";
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { EXRLoader } from "three/addons";
+import {timerDelta} from "three/tsl";
 
 
 /*
 Texture
  */
-const textureLoader = new THREE.TextureLoader()
+const loadingManager = new THREE.LoadingManager(
+    () => {
+        gsap.delayedCall(0.5, ()=>{
+            gsap.to(overlayMaterial.uniforms.uAlpha, { duration : 1.5 ,value:0, delay:1 })
+            loadingBarElement.classList.add('ended')
+            loadingBarElement.style.transform = ''
+            }
+        )
+    },
+    (itemUrl,itemsLoaded,itemsTotal) => {
+        const progressRatio = itemsLoaded / itemsTotal;
+        loadingBarElement.style.transform =`scaleX(${progressRatio})`
+        console.log(progressRatio)
+    }
+)
+
+const textureLoader = new THREE.TextureLoader(loadingManager)
+
 // const bakedShadow = textureLoader.load('/src/assets/textures/shadows/bakedShadow.jpg');
 // const simpleShadow = textureLoader.load('/src/assets/textures/shadows/simpleShadow.jpg');
 
-// const cubeTextureLoader = new THREE.CubeTextureLoader()
+const fontLoader = new FontLoader(loadingManager)
 
-// const matcapTexture = textureLoader.load('/src/assets/textures/matcaps/8.png')
-
-const doorColorTexture = textureLoader.load('/src/assets/textures/door/color.jpg')
-const doorAlphaTexture = textureLoader.load('/src/assets/textures/door/alpha.jpg')
-const doorHeightTexture = textureLoader.load('/src/assets/textures/door/height.jpg')
-const doorNormalTexture = textureLoader.load('/src/assets/textures/door/normal.jpg')
-const doorAmbientOcclusionTexture = textureLoader.load('/src/assets/textures/door/ambientOcclusion.jpg')
-const doorMetalnessTexture = textureLoader.load('/src/assets/textures/door/metalness.jpg')
-const doorRoughnessTexture = textureLoader.load('/src/assets/textures/door/roughness.jpg')
-
-const bricksColorTexture = textureLoader.load('/src/assets/textures/bricks/color.jpg')
-const bricksAmbientOcclusionTexture = textureLoader.load('/src/assets/textures/bricks/ambientOcclusion.jpg')
-const bricksNormalTexture = textureLoader.load('/src/assets/textures/bricks/normal.jpg')
-const bricksRoughnessTexture = textureLoader.load('/src/assets/textures/bricks/roughness.jpg')
-
-const grassColorTexture = textureLoader.load('/src/assets/textures/grass/color.jpg')
-const grassAmbientOcclusionTexture = textureLoader.load('/src/assets/textures/grass/ambientOcclusion.jpg')
-const grassNormalTexture = textureLoader.load('/src/assets/textures/grass/normal.jpg')
-const grassRoughnessTexture = textureLoader.load('/src/assets/textures/grass/roughness.jpg')
-
-grassColorTexture.repeat.set(8,8)
-grassAmbientOcclusionTexture.repeat.set(8,8)
-grassNormalTexture.repeat.set(8,8)
-grassRoughnessTexture.repeat.set(8,8)
-
-grassColorTexture.wrapS = THREE.RepeatWrapping;
-grassAmbientOcclusionTexture.wrapS = THREE.RepeatWrapping;
-grassNormalTexture.wrapS = THREE.RepeatWrapping;
-grassRoughnessTexture.wrapS = THREE.RepeatWrapping;
-
-grassColorTexture.wrapT = THREE.RepeatWrapping;
-grassAmbientOcclusionTexture.wrapT = THREE.RepeatWrapping;
-grassNormalTexture.wrapT = THREE.RepeatWrapping;
-grassRoughnessTexture.wrapT = THREE.RepeatWrapping;
-
-// const gradientTextures = textureLoader.load('/src/assets/textures/gradients/5.jpg');
-// gradientTextures.minFilter = THREE.NearestFilter
-// gradientTextures.magFilter = THREE.NearestFilter
-// gradientTextures.generateMipmaps = false
-//
-
-// const environmentMapTexture = cubeTextureLoader.load([
-//     '/src/assets/textures/environmentMaps/1/px.jpg',
-//     '/src/assets/textures/environmentMaps/1/nx.jpg',
-//     '/src/assets/textures/environmentMaps/1/py.jpg',
-//     '/src/assets/textures/environmentMaps/1/ny.jpg',
-//     '/src/assets/textures/environmentMaps/1/pz.jpg',
-//     '/src/assets/textures/environmentMaps/1/nz.jpg'
-// ])
-//
-doorColorTexture.colorSpace = THREE.SRGBColorSpace
-bricksColorTexture.colorSpace = THREE.SRGBColorSpace
-grassColorTexture.colorSpace = THREE.SRGBColorSpace
+const loadingBarElement = document.querySelector(".loading-bar");
 
 
 
-/*
-font
- */
-// const fontLoader = new FontLoader
-//
-// fontLoader.load(
-//     '/src/assets/font/helvetiker_regular.typeface.json',
-//     (font) =>{
-//         const textGeometry = new TextGeometry(
-//             'Zheng Leyi',
-//             {
-//                 font: font,
-//                 size: 0.5,
-//                 height: 0.2,
-//                 curveSegment: 12,
-//                 bevelEnabled: true,
-//                 bevelThickness: 0.03,
-//                 bevelSize: 0.02,
-//                 bevelOffset: 0,
-//                 bevelSegment: 5
-//             }
-//         )
-//         textGeometry.center()
-//
-//         const material = new THREE.MeshMatcapMaterial()
-//         material.matcap = matcapTexture
-//         const text = new THREE.Mesh(textGeometry,material)
-//         scene.add(text)
-//
-//         const donutGeometry = new THREE.TorusGeometry(0.3,0.2,20,45)
-//
-//         for( let i=0 ; i<1000 ; i++){
-//             const donut = new THREE.Mesh(donutGeometry,material)
-//
-//             donut.position.x = (Math.random() - 0.5) * 15
-//             donut.position.y = (Math.random() - 0.5) * 15
-//             donut.position.z = (Math.random() - 0.5) * 15
-//
-//             donut.rotation.x = Math.random() * Math.PI
-//             donut.rotation.y = Math.random() * Math.PI
-//
-//             const scale = Math.random()
-//             donut.scale.set(scale,scale,scale)
-//
-//             scene.add(donut)
-//
-//         }
-//
-// }
-// )
+const cubeTextureLoader = new THREE.CubeTextureLoader(loadingManager)
 
+const exrLoader = new EXRLoader(loadingManager)
+const gltfLoader = new GLTFLoader(loadingManager);
 
 /*
 Gui
@@ -137,6 +57,8 @@ const gui = new dat.GUI({
     title:'debug UI',
     closeFolders: true,
 })
+const global = {}
+
 gui.close()
 // gui.hide()
 
@@ -148,6 +70,7 @@ window.addEventListener('keydown',() =>{
 const debugObject = {}
 
 console.log(OrbitControls)
+
 
 //Cursor
 const cursor = {
@@ -169,9 +92,97 @@ const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
 
 
+
+/*
+HDRI
+ */
+const environmentMap = cubeTextureLoader.load(
+    [
+        'src/assets/textures/environmentMaps/nocloud/px.png',
+        'src/assets/textures/environmentMaps/nocloud/nx.png',
+        'src/assets/textures/environmentMaps/nocloud/py.png',
+        'src/assets/textures/environmentMaps/nocloud/ny.png',
+        'src/assets/textures/environmentMaps/nocloud/pz.png',
+        'src/assets/textures/environmentMaps/nocloud/nz.png']
+)
+
+scene.environment = environmentMap
+scene.background = environmentMap
+
+/*
+update all materials
+ */
+const updateAllMaterials = () =>
+{
+    scene.traverse((child)=>
+        {
+            if( child.isMesh && child.material.isMeshStandardMaterial){
+                child.material.envMap = environmentMap;
+                child.material.envMapIntensity = global.envMapIntensity
+                child.material.needsUpdate = true;
+
+            }
+
+        }
+    )
+}
+
+/*
+Global Intensity
+ */
+global.envMapIntensity = 2
+gui.add(global,'envMapIntensity')
+    .min(0)
+    .max(10)
+    .step(0.001)
+    .onChange(updateAllMaterials)
+
+
+
+
+
+/*
+Models
+ */
+let mixer = null
+
+gltfLoader.load(
+    'src/assets/ZUST/12-2-applydem.gltf',
+    (gltf) => {
+        // 全部加载
+        const children = [...gltf.scene.children];
+        for (const child of children) {
+            scene.add(child);
+        }
+
+        //
+        // mixer = new THREE.AnimationMixer(gltf.scene);
+        // const action = mixer.clipAction(gltf.animations[2]);
+        // action.play();
+
+        const model = gltf.scene;
+
+        scene.add(model);
+
+        }
+        )
+
+
+/*
+POI
+ */
+const points = [
+    {
+        position: new THREE.Vector3(580, 50,-400),
+        element:document.querySelector('.point-0')
+    }
+]
+
+
+
 //fog
-const fog = new THREE.Fog('#262837',1,15)
-scene.fog = fog
+// const fog = new THREE.Fog('#262837',1,15)
+// scene.fog = fog
 
 
 /*
@@ -205,15 +216,15 @@ basic
 // material.transparent = true
 
 
-const material = new THREE.MeshStandardMaterial({color:'#8baf71'})
-material.metalness = 0
-material.roughness = 0.8
-// material.envMap = environmentMapTexture
-
-material.side = THREE.DoubleSide
-
-gui.add(material,'metalness').min(0).max(1).step(0.001)
-gui.add(material,'roughness').min(0).max(1).step(0.001)
+// const material = new THREE.MeshStandardMaterial({color:'#8baf71'})
+// material.metalness = 0
+// material.roughness = 0.8
+// // material.envMap = environmentMapTexture
+//
+// material.side = THREE.DoubleSide
+//
+// gui.add(material,'metalness').min(0).max(1).step(0.001)
+// gui.add(material,'roughness').min(0).max(1).step(0.001)
 // gui.add(material,'displacementScale').min(0).max(1).step(0.001)
 
 // const sphere = new THREE.Mesh(
@@ -230,172 +241,84 @@ gui.add(material,'roughness').min(0).max(1).step(0.001)
 //
 // scene.add(sphere)
 
-// const cube = new THREE.Mesh(
-//     new THREE.BoxGeometry(1,1,1,1),
-//     material
-// )
-// cube.castShadow = true
-// cube.receiveShadow = true
+
+/*
+Raycaster
+ */
+
+// const raycaster = new THREE.Raycaster()
 //
-// cube.position.x = -2
+// const rayOrigin = new THREE.Vector3(-3,0,0)
+// const rayDirection = new THREE.Vector3(10,0,0)
+// rayDirection.normalize()
+//
+// raycaster.set(rayOrigin,rayDirection)
+//
+// const intersect = raycaster.intersectObject(cube2)
+//
+// const intersects = raycaster.intersectObjects([cube,cube2,cube3])
+// console.log(intersects)
 
-
-const plane = new THREE.Mesh(
-    new THREE.PlaneGeometry(20,20,256,256),
-    new THREE.MeshStandardMaterial(
-        {
-            map: grassColorTexture,
-            aoMap: grassAmbientOcclusionTexture,
-            normalMap: grassNormalTexture,
-            roughnessMap: grassRoughnessTexture,
-        }
-    )
-)
-plane.geometry.setAttribute(              //uv处理
-    'uv2',
-    new THREE.Float32BufferAttribute(plane.geometry.attributes.uv.array,2)
-)
-plane.rotation.x =- Math.PI / 2
+// const plane = new THREE.Mesh(
+//     new THREE.PlaneGeometry(20,20,256,256),
+//     new THREE.MeshStandardMaterial(
+//         {
+//     side: THREE.DoubleSide
+    //         map: grassColorTexture,
+    //         aoMap: grassAmbientOcclusionTexture,
+    //         normalMap: grassNormalTexture,
+    //         roughnessMap: grassRoughnessTexture,
+//         }
+//     )
+// )
+// plane.geometry.setAttribute(              //uv处理
+//     'uv2',
+//     new THREE.Float32BufferAttribute(plane.geometry.attributes.uv.array,2)
+// )
+// plane.rotation.x =- Math.PI / 2
 // plane.position.y = -0.5
-scene.add(plane)
-
+// scene.add(plane)
 
 
 
 /*
 House
  */
-const house = new THREE.Group()
-scene.add(house)
-
-
-const walls = new THREE.Mesh(
-    new THREE.BoxGeometry(4,2.5,4),
-    new THREE.MeshStandardMaterial({
-        map: bricksColorTexture,
-        aoMap: bricksAmbientOcclusionTexture,
-        normalMap: bricksNormalTexture,
-        roughnessMap: bricksRoughnessTexture,
-        })
-)
-walls.geometry.setAttribute('uv2',
-    new THREE.Float32BufferAttribute(walls.geometry.attributes.uv.array,2)
-)
-walls.position.y = 1.25
-house.add(walls)
-
-
-const roof = new THREE.Mesh(
-    new THREE.ConeGeometry(3.5,2,4),
-    new THREE.MeshStandardMaterial({color:'#b35f45'})
-)
-roof.position.y = 3.25
-roof.rotation.y = Math.PI / 4
-house.add(roof)
-
-
-const door = new THREE.Mesh(
-    new THREE.PlaneGeometry(2,2,128,128),
-    new THREE.MeshStandardMaterial({
-        map: doorColorTexture,
-        transparent: true,
-        alphaMap: doorAlphaTexture,
-        aoMap: doorAmbientOcclusionTexture,
-        displacementMap: doorHeightTexture,
-        displacementScale:0.15,
-        normalMap: doorNormalTexture,
-        metalnessMap: doorMetalnessTexture,
-        roughnessMap: doorRoughnessTexture,
-    })
-)
-door.geometry.setAttribute('uv2',
-    new THREE.Float32BufferAttribute(door.geometry.attributes.uv.array,2)
-    )
-door.position.y = 0.9
-door.position.z = 2.001
-house.add(door)
-
-//Bushes
-const bashGeometry = new THREE.SphereGeometry(1,16,16)
-const bushMaterial = new THREE.MeshStandardMaterial({color:'#89c854'})
-
-const bush = new THREE.Mesh(bashGeometry,bushMaterial)
-bush.scale.set(0.5,0.5,0.5)
-bush.position.set(0.8,0.2,2.3)
-
-const bush1 = new THREE.Mesh(bashGeometry,bushMaterial)
-bush1.scale.set(0.15,0.15,0.15)
-bush1.position.set(-1,0.05,2.7)
-
-const bush2 = new THREE.Mesh(bashGeometry,bushMaterial)
-bush2.scale.set(0.25,0.25,0.25)
-bush2.position.set(1.4,0.1,2.2)
-
-const bush3 = new THREE.Mesh(bashGeometry,bushMaterial)
-bush3.scale.set(0.4,0.4,0.4)
-bush3.position.set(-0.8,0.1,2.3)
-scene.add(bush,bush2,bush3,bush1)
-
-
-//Graves
-const graves = new THREE.Group()
-scene.add(graves)
-
-const graveGeometry = new THREE.BoxGeometry(0.6,0.8,0.2)
-const graveMaterial = new THREE.MeshStandardMaterial({color:'#aa7b7b'})
-
-for( let i = 0; i < 50 ;i++){
-    const angle = Math.random() * Math.PI * 2;
-    const radius = 3 + Math.random() * 7;
-    const x = Math.sin(angle) * radius
-    const y = Math.cos(angle) * radius
-
-    const grave = new THREE.Mesh(graveGeometry,graveMaterial)
-    grave.position.set(x,0.35,y)
-
-    grave.rotation.y = (Math.random() - 0.5) * 0.4
-    grave.rotation.z = (Math.random() - 0.5) * 0.1
-
-    grave.castShadow = true
-    grave.receiveShadow = true
-
-    graves.add(grave)
-}
-
 
 
 /*
 Lights
  */
-const ambientLight = new THREE.AmbientLight('#b9d5ff',0.1)
+const ambientLight = new THREE.AmbientLight('#fffff9',2)
 scene.add(ambientLight)
-gui.add(ambientLight,'intensity').min(0.01).max(1).step(0.001)
+gui.add(ambientLight,'intensity').min(0.01).max(5).step(0.001)
+//
+//
+// const directionalLight = new THREE.DirectionalLight('#fdfcf8',2)
+// directionalLight.position.set(4,5,-2)
+// scene.add(directionalLight)
+// // gui.add(directionalLight,'intensity').min(0.01).max(5).step(0.001)
+// directionalLight.castShadow = false
+
+// directionalLight.shadow.mapSize.width = 1024
+// directionalLight.shadow.mapSize.height = 1024
+// directionalLight.shadow.camera.near = 1
+// directionalLight.shadow.camera.far = 10
+// directionalLight.shadow.camera.top = 3
+// directionalLight.shadow.camera.right = 3
+// directionalLight.shadow.camera.bottom = -3
+// directionalLight.shadow.camera.left = -3
+// directionalLight.shadow.radius = 5
+
+// const directionalLightCameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera)
+// directionalLightCameraHelper.visible = false
+// scene.add(directionalLightCameraHelper)
 
 
-const directionalLight = new THREE.DirectionalLight('#b9d5ff',0.1)
-directionalLight.position.set(4,5,-2)
-scene.add(directionalLight)
-gui.add(directionalLight,'intensity').min(0.01).max(5).step(0.001)
-directionalLight.castShadow = false
-
-directionalLight.shadow.mapSize.width = 1024
-directionalLight.shadow.mapSize.height = 1024
-directionalLight.shadow.camera.near = 1
-directionalLight.shadow.camera.far = 10
-directionalLight.shadow.camera.top = 3
-directionalLight.shadow.camera.right = 3
-directionalLight.shadow.camera.bottom = -3
-directionalLight.shadow.camera.left = -3
-directionalLight.shadow.radius = 5
-
-const directionalLightCameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera)
-directionalLightCameraHelper.visible = false
-scene.add(directionalLightCameraHelper)
-
-
-const doorLight = new THREE.PointLight('#ff7d46', 5,7)
-doorLight.position.set(0,2.1,2.7)
-scene.add(doorLight)
+//
+// const doorLight = new THREE.PointLight('#ff7d46', 5,7)
+// doorLight.position.set(0,2.1,2.7)
+// scene.add(doorLight)
 
 
 
@@ -464,15 +387,6 @@ GUI
 // const cubeTweaks = gui.addFolder('cube')
 // cubeTweaks.close()
 //
-// cubeTweaks.add(cube1.position,'y')  //物体位置控制gui
-//     .min(-3)
-//     .max(3)
-//     .step(0.01)
-//     .name('z')
-//
-// cubeTweaks.add(cube1,'visible')    //物体可见性gui
-//     .name('方块可见')
-//
 // cubeTweaks.add(cube1.material,'wireframe')
 //
 // cubeTweaks.addColor(debugObject,'color')        //改变颜色和同步
@@ -499,26 +413,70 @@ GUI
 //     })
 
 
-/*
-Ghost
- */
-const ghost = new THREE.PointLight('#ff00ff',10,3)
-ghost.position.y = 3
-scene.add(ghost)
-
-const ghost2 = new THREE.PointLight('#00ffff',10,3)
-ghost2.position.y = 3
-scene.add(ghost2)
-
-const ghost3 = new THREE.PointLight('#ff0000',10,3)
-ghost3.position.y = 3
-scene.add(ghost3)
-
-
-
 //axes helper
-// const axesHelper = new THREE.AxesHelper()
-// scene.add(axesHelper)
+const axesHelper = new THREE.AxesHelper()
+axesHelper.scale.set(300, 300, 300);
+axesHelper.position.set(580,30,-383)
+axesHelper.visible = false
+scene.add(axesHelper)
+
+
+/*
+OverLay
+ */
+//video material
+const video = document.createElement('video');
+video.src = 'src/assets/video/output_vp9.webm';
+video.autoplay = true;
+video.loop = false;
+video.muted = true;
+video.playsInline = true;  // 确保在移动设备上可以内嵌播放
+video.style.display = 'none';  // 隐藏视频元素
+document.body.appendChild(video);  // 将视频元素添加到文档中
+video.playbackRate = 1;
+
+video.addEventListener('loadedmetadata', () => {
+    video.currentTime = 0;  // 设置视频从第三秒开始播放
+});
+
+// 创建视频纹理
+const videoTexture = new THREE.VideoTexture(video);
+videoTexture.minFilter = THREE.LinearFilter;  // 线性滤波
+videoTexture.magFilter = THREE.LinearFilter;  // 线性滤波
+videoTexture.format = THREE.RGBFormat;
+
+const overlayGeometry = new THREE.PlaneGeometry(2, 2, 1, 1);
+const overlayMaterial = new THREE.ShaderMaterial({
+    // wireframe: true,
+    transparent: true,
+    uniforms: {
+        uAlpha: {value: 1},
+        uVideoTexture: { value: videoTexture }
+    },
+    vertexShader: `
+        varying vec2 vUv;
+        void main() {
+            vUv = uv;
+            gl_Position = vec4(position, 1.0);
+        }
+    `,
+    fragmentShader: `
+    uniform float uAlpha;
+        uniform sampler2D uVideoTexture;
+        varying vec2 vUv;
+
+        void main() {
+            vec4 videoColor = texture2D(uVideoTexture, vUv);
+            gl_FragColor = vec4(videoColor.rgb, videoColor.a * uAlpha);
+        }
+    `,
+
+});
+
+const overlay = new THREE.Mesh(overlayGeometry, overlayMaterial);
+scene.add(overlay);
+overlay.position.copy(axesHelper.position);
+
 
 
 /*
@@ -549,7 +507,6 @@ window.addEventListener('dblclick', () => {
         canvas.requestFullscreen()                         //进入全屏
     }else{
         document.exitFullscreen()                          //退出全屏
-        console.log('leave fullscreen')
     }
 })
 
@@ -557,50 +514,66 @@ window.addEventListener('dblclick', () => {
 /*
 camera
  */
-const camera = new THREE.PerspectiveCamera(75,sizes.width / sizes.height,0.1,1000)
-camera.position.z = 4
-camera.position.y = 4
-camera.position.x = 4
+const camera = new THREE.PerspectiveCamera(40,sizes.width / sizes.height,0.1,10000)
+camera.position.z = -510
+camera.position.y = 120
+camera.position.x = 400
 scene.add(camera)
 
 //相机控制
 const controls = new OrbitControls(camera, canvas)
+controls.addEventListener('change', () => {
+    if (camera.position.y < 50) {
+        camera.position.y = 50;
+    }
+});
 controls.enableDamping = true
+controls.target.copy(axesHelper.position);
+controls.update();
+
+
 
 
 /*
 Render
  */
 const renderer = new THREE.WebGLRenderer({
-    canvas:canvas
-})
-renderer.setSize(sizes.width,sizes.height)
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-renderer.antialias = true
-renderer.shadowMap.enabled = true
-renderer.shadowMap.type = THREE.PCFSoftShadowMap
-renderer.setClearColor('#282637')
+    canvas: canvas,
+    antialias: true
+});
+renderer.setSize(sizes.width, sizes.height);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+// 设置渲染器的输出编码为 sRGB
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+// 启用物理正确的光照模式
+renderer.physicallyCorrectLights = true;
+console.log(THREE.REVISION);
+// renderer.shadowMap.enabled = true
+// renderer.shadowMap.type = THREE.PCFSoftShadowMap
+// renderer.setClearColor('#282637')
 
 
 //Shadow
-directionalLight.castShadow = true
-doorLight.castShadow = true
-ghost.castShadow = true
-ghost2.castShadow = true
-ghost3.castShadow = true
-
-walls.castShadow = true
-walls.receiveShadow = true
-
-bush.castShadow = true
-bush.receiveShadow = true
-bush2.castShadow = true
-bush2.receiveShadow = true
-bush3.castShadow = true
-bush3.receiveShadow = true
-
-plane.castShadow = false
-plane.receiveShadow = true
+// directionalLight.castShadow = true
+// doorLight.castShadow = true
+// ghost.castShadow = true
+// ghost2.castShadow = true
+// ghost3.castShadow = true
+//
+// walls.castShadow = true
+// walls.receiveShadow = true
+//
+// bush.castShadow = true
+// bush.receiveShadow = true
+// bush2.castShadow = true
+// bush2.receiveShadow = true
+// bush3.castShadow = true
+// bush3.receiveShadow = true
+//
+// plane.castShadow = false
+// plane.receiveShadow = true
 
 
 // //Time
@@ -616,43 +589,46 @@ const clock = new THREE.Clock()
 /*
 Animations
  */
+let previousTime = 0
+
 const tick = () =>{
+
     //Clock
     const elapsedTime = clock.getElapsedTime()
-
-    //sphere
-    // sphere.position.z = Math.sin(elapsedTime * 2)
-    // sphere.position.x = Math.cos(elapsedTime * 2)
-    // sphere.position.y = Math.abs(Math.sin(elapsedTime * 2))
+    const deltaTime = elapsedTime - previousTime
+    previousTime = elapsedTime
 
 
-    //update shadow
-    // sphereShadow.position.x = sphere.position.x
-    // sphereShadow.position.z = sphere.position.z
-    // sphereShadow.material.opacity = (1 - sphere.position.y) * 0.3
+    // update mixer
+    if (mixer !== null){
+        mixer.update(deltaTime)
+    }
 
-    const ghostAngle = elapsedTime * 0.5
-    ghost.position.x = Math.cos(ghostAngle) * 4
-    ghost.position.z = Math.sin(ghostAngle) * 4
-    ghost.position.y = Math.sin(ghostAngle * 3)
-
-    const ghost2Angle = -elapsedTime * 0.32
-    ghost2.position.x = Math.cos(ghost2Angle) * 5
-    ghost2.position.z = Math.sin(ghost2Angle) * 5
-    ghost2.position.y = Math.sin(ghost2Angle * 4) + Math.sin(elapsedTime * 2.5)
-
-    const ghost3Angle = -elapsedTime * 0.24
-    ghost3.position.x = Math.cos(ghost3Angle) * (7 + Math.sin(elapsedTime * 0.32))
-    ghost3.position.z = Math.sin(ghost3Angle) * (7 + Math.sin(elapsedTime * 0.5))
-    ghost3.position.y = Math.sin(ghost3Angle * 4) + Math.sin(elapsedTime * 2.5)
-
-    // camera.lookAt(cube1.position)
 
     //更新控制
     controls.update()
 
+
+    for(const point of points){
+        const screenPosition = point.position.clone()
+        screenPosition.project(camera)
+
+        const translateX = screenPosition.x * sizes.width * 0.5
+        const translateY = -screenPosition.y * sizes.height * 0.5
+        point.element.style.transform = `translate(${translateX}px, ${translateY}px)`
+    }
+
     //Render
     renderer.render(scene,camera)
+
+    if (video.readyState >= video.HAVE_ENOUGH_DATA) {
+        if (video.paused) {
+            video.play().catch((error) => {
+                console.error('Failed to play the video:', error);
+            });
+        }
+        videoTexture.needsUpdate = true;  // 确保视频纹理更新
+    }
 
     window.requestAnimationFrame(tick)
 }
