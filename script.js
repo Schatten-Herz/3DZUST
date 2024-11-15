@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-import * as Three from "three"
 import gsap from 'gsap'
 import { OrbitControls } from "three/addons";
 import GUI from 'lil-gui'
@@ -21,7 +20,19 @@ Texture
 const loadingManager = new THREE.LoadingManager(
     () => {
         gsap.delayedCall(0.5, ()=>{
-            gsap.to(overlayMaterial.uniforms.uAlpha, { duration : 1.5 ,value:0, delay:1 })
+            gsap.to(overlayMaterial.uniforms.uAlpha, { duration : 1.5,
+                value:0,
+                delay:1,
+                onComplete: () => {
+                    const pointElements = document.querySelectorAll('.point');
+                    pointElements.forEach(point => {
+                        point.style.display = 'block';
+                    });
+                }
+            })
+
+
+
             loadingBarElement.classList.add('ended')
             loadingBarElement.style.transform = ''
             }
@@ -110,6 +121,8 @@ const environmentMap = cubeTextureLoader.load(
 scene.environment = environmentMap
 scene.background = environmentMap
 
+
+
 /*
 update all materials
  */
@@ -127,6 +140,8 @@ const updateAllMaterials = () =>
         }
     )
 }
+
+
 
 /*
 Global Intensity
@@ -161,12 +176,6 @@ gltfLoader.load(
         //
         // scene.add(model);
         })
-
-
-
-
-
-//camera movement & lookatPoint
 
 
 
@@ -274,6 +283,7 @@ Raycaster
 /*
 House
  */
+
 
 
 /*
@@ -411,6 +421,7 @@ axesHelper.visible = false
 scene.add(axesHelper)
 
 
+
 /*
 OverLay
  */
@@ -501,6 +512,7 @@ window.addEventListener('dblclick', () => {
 })
 
 
+
 /*
 camera
  */
@@ -522,10 +534,11 @@ controls.target.copy(axesHelper.position);
 controls.minDistance = 5;
 controls.update();
 
+
+
 /*
 POI
  */
-
 const points = [
     {
         position: new THREE.Vector3(620, 30, -425),
@@ -668,7 +681,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        requestAnimationFrame(animateCamera); // 启动动画
+        requestAnimationFrame(animateCamera);
     }
 });
 
@@ -708,11 +721,9 @@ function resetCamera() {
         if (t < 1) {
             requestAnimationFrame(animateResetCamera);
         } else {
-            //目标为 axesHelper
             controls.target.copy(initialTargetPosition);
-            controls.update(); // 更新控制器
+            controls.update();
 
-            // 重新启用控制器交互
             controls.enabled = true;
         }
     }
@@ -772,6 +783,7 @@ const clock = new THREE.Clock()
 
 // gsap.to(cube1.position, { duration:1,delay:1,x:2 })
 // gsap.to(cube1.position, { duration:1,delay:2,x:0 })
+
 
 
 /*
