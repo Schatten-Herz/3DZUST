@@ -4,7 +4,7 @@ import gsap from 'gsap'
 import { OrbitControls } from "three/addons";
 import GUI from 'lil-gui'
 import geometries from "three/src/renderers/common/Geometries";
-import {SRGBColorSpace} from "three";
+import {Raycaster, SRGBColorSpace} from "three";
 import * as dat from 'dat.gui'
 import { FontLoader} from "three/addons";
 import { TextGeometry} from "three/addons";
@@ -12,6 +12,7 @@ import {RectAreaLightHelper} from "three/addons";
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { EXRLoader } from "three/addons";
 import {timerDelta} from "three/tsl";
+import index from "dat.gui";
 
 
 /*
@@ -42,7 +43,7 @@ const fontLoader = new FontLoader(loadingManager)
 
 const loadingBarElement = document.querySelector(".loading-bar");
 
-
+const infoPanelElement = document.querySelector("#info-panel");
 
 const cubeTextureLoader = new THREE.CubeTextureLoader(loadingManager)
 
@@ -60,7 +61,7 @@ const gui = new dat.GUI({
 const global = {}
 
 gui.close()
-// gui.hide()
+gui.hide()
 
 window.addEventListener('keydown',() =>{
     if(event.key === `h`)
@@ -139,8 +140,6 @@ gui.add(global,'envMapIntensity')
 
 
 
-
-
 /*
 Models
  */
@@ -154,29 +153,20 @@ gltfLoader.load(
         for (const child of children) {
             scene.add(child);
         }
-
-        //
         // mixer = new THREE.AnimationMixer(gltf.scene);
         // const action = mixer.clipAction(gltf.animations[2]);
         // action.play();
 
-        const model = gltf.scene;
-
-        scene.add(model);
-
-        }
-        )
+        // const model = gltf.scene;
+        //
+        // scene.add(model);
+        })
 
 
-/*
-POI
- */
-const points = [
-    {
-        position: new THREE.Vector3(580, 50,-400),
-        element:document.querySelector('.point-0')
-    }
-]
+
+
+
+//camera movement & lookatPoint
 
 
 
@@ -416,7 +406,7 @@ GUI
 //axes helper
 const axesHelper = new THREE.AxesHelper()
 axesHelper.scale.set(300, 300, 300);
-axesHelper.position.set(580,30,-383)
+axesHelper.position.set(600,30,-400)
 axesHelper.visible = false
 scene.add(axesHelper)
 
@@ -514,23 +504,221 @@ window.addEventListener('dblclick', () => {
 /*
 camera
  */
-const camera = new THREE.PerspectiveCamera(40,sizes.width / sizes.height,0.1,10000)
-camera.position.z = -510
-camera.position.y = 120
-camera.position.x = 400
+const camera = new THREE.PerspectiveCamera(45,sizes.width / sizes.height,0.1,10000)
+camera.position.z = -405
+camera.position.y = 60
+camera.position.x = 375
 scene.add(camera)
 
 //相机控制
 const controls = new OrbitControls(camera, canvas)
 controls.addEventListener('change', () => {
-    if (camera.position.y < 50) {
-        camera.position.y = 50;
+    if (camera.position.y < 20) {
+        camera.position.y = 20;
     }
 });
 controls.enableDamping = true
 controls.target.copy(axesHelper.position);
+controls.minDistance = 5;
 controls.update();
 
+/*
+POI
+ */
+
+const points = [
+    {
+        position: new THREE.Vector3(620, 30, -425),
+        element: document.querySelector('.point-0'),
+        cameraPosition: new THREE.Vector3(634, 40, -480), // 摄像机移动到的位置
+        lookAt: new THREE.Vector3(605, 25, -430) // 摄像机朝向的位置
+    }
+];
+const points0Position = gui.addFolder('Points0');
+
+if (points[0].position) {
+    points0Position.add(points[0].position, 'x').min(-1000).max(1000).step(0.01);
+    points0Position.add(points[0].position, 'y').min(-1000).max(1000).step(0.01);
+    points0Position.add(points[0].position, 'z').min(-1000).max(1000).step(0.01);
+} else {
+    console.error("Position is not defined properly.");
+}
+
+points.push({
+    position: new THREE.Vector3(650, 40, -520),
+    element: document.querySelector('.point-1'),
+    cameraPosition: new THREE.Vector3(575,45,-525),
+    lookAt: new THREE.Vector3(630, 30, -506)
+});
+
+const points1Position = gui.addFolder('Points1');
+
+if (points[1].position) {
+    points1Position.add(points[1].position, 'x').min(-1000).max(1000).step(0.01);
+    points1Position.add(points[1].position, 'y').min(-1000).max(1000).step(0.01);
+    points1Position.add(points[1].position, 'z').min(-1000).max(1000).step(0.01);
+} else {
+    console.error("Position for the second point is not defined properly.");
+}
+
+// Info Panel
+
+function closeInfoPanel() {
+    const infoPanel = document.getElementById('info-panel');
+    if (infoPanel) {
+        infoPanel.style.transform = 'translateX(100%)';
+        infoPanel.style.display = 'none';
+    } else {
+        console.error("Info panel not found.");
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const pointsInfo = [
+        {
+            title: '水晶剧院-学生活动中心',
+            description: '水晶剧院-学生活动中心 \n' + '\n' +
+                'Crystal Theater-Student Activity Center \n' + '\n' +
+                'Kristalltheater - Zentrum für studentische Aktivitäten.'
+        },
+        {
+            title: '教务处',
+            description: '教务处 \n' + '\n' +
+                'Academic Affairs Office \n' + '\n' +
+                'Büro für akademische Angelegenheiten'
+        }
+    ];
+    const infoDescription = document.getElementById('info-description');
+    infoDescription.textContent = pointsInfo[0].description;
+
+    // 绑定事件处理程序到每个兴趣点
+    const pointElements = document.querySelectorAll('.point');
+    pointElements.forEach(point => {
+        point.addEventListener('click', () => {
+            const index = point.getAttribute('data-index');
+            console.log(`Point clicked: ${index}`);
+
+            if (points[index] && points[index].cameraPosition && points[index].lookAt) {
+                moveCamera(points[index].cameraPosition, points[index].lookAt);
+            }
+
+            // 面板
+            showInfoPanel(index);
+        });
+    });
+
+    // 绑定关闭按钮事件
+    const closeButton = document.getElementById('close-button');
+    if (closeButton) {
+        closeButton.addEventListener('click', () => {
+            console.log("Close button clicked");
+            closeInfoPanel();
+        });
+    }
+
+    // 显示信息面板
+    function showInfoPanel(pointIndex) {
+        const infoPanel = document.getElementById('info-panel');
+        const infoDescription = document.getElementById('info-description');
+        const infoTitle = infoPanel.querySelector('h2');
+
+        if (infoPanel && infoTitle && infoDescription) {
+            // 更新标题和描述
+            infoTitle.textContent = pointsInfo[pointIndex].title;
+            infoDescription.textContent = pointsInfo[pointIndex].description;
+
+            infoPanel.style.transform = `scaleX(100%)`;
+            // 显示信息面板
+            infoPanel.style.display = 'block';
+        } else {
+            console.error("Info panel elements not found.");
+        }
+    }
+
+
+    // 相机移动函数
+    function moveCamera(targetPosition, lookAtPosition) {
+        const duration = 2; // 移动的持续时间，单位为秒
+        const startTime = performance.now();
+        const initialPosition = camera.position.clone();
+        const initialTarget = controls.target.clone();
+
+        controls.enabled = false;
+
+        function animateCamera(time) {
+            const elapsed = (time - startTime) / 1000; // 计算经过的时间（秒）
+            const t = Math.min(elapsed / duration, 1); // 归一化时间
+
+            // 使用 lerpVectors 实现相机位置插值
+            camera.position.lerpVectors(initialPosition, targetPosition, t);
+
+            // 更新相机的朝向
+            const currentTarget = new THREE.Vector3().lerpVectors(initialTarget, lookAtPosition, t);
+            controls.target.copy(currentTarget);
+            controls.update();
+
+            if (t < 1) {
+                requestAnimationFrame(animateCamera);
+            } else {
+                // 保持朝向目标
+                controls.target.copy(lookAtPosition);
+                controls.update();
+
+                controls.enabled = true;
+            }
+        }
+
+        requestAnimationFrame(animateCamera); // 启动动画
+    }
+});
+
+
+//camera back
+const initialCameraPosition = new THREE.Vector3(375,60,-405);
+const initialTargetPosition = axesHelper.position.clone();
+
+// 键盘事件监听
+window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' || event.key === 'Esc') {
+        // 当按下 Esc 键时，移动相机到初始位置并朝向 axesHelper
+        resetCamera();
+        closeInfoPanel();
+    }
+});
+
+// 重置相机函数
+function resetCamera() {
+    const duration = 2; // 持续时间，单位为秒
+    const startTime = performance.now();
+    const initialPosition = camera.position.clone();
+    const initialTarget = controls.target.clone();
+
+    controls.enabled = false;
+
+    function animateResetCamera(time) {
+        const elapsed = (time - startTime) / 1000;
+        const t = Math.min(elapsed / duration, 1);
+
+        camera.position.lerpVectors(initialPosition, initialCameraPosition, t);
+
+        //指向 axesHelper
+        controls.target.lerpVectors(initialTarget, initialTargetPosition, t);
+        controls.update();
+
+        if (t < 1) {
+            requestAnimationFrame(animateResetCamera);
+        } else {
+            //目标为 axesHelper
+            controls.target.copy(initialTargetPosition);
+            controls.update(); // 更新控制器
+
+            // 重新启用控制器交互
+            controls.enabled = true;
+        }
+    }
+
+    requestAnimationFrame(animateResetCamera);
+}
 
 
 
@@ -598,6 +786,7 @@ const tick = () =>{
     const deltaTime = elapsedTime - previousTime
     previousTime = elapsedTime
 
+    console.log(`Camera position: x=${camera.position.x.toFixed(2)}, y=${camera.position.y.toFixed(2)}, z=${camera.position.z.toFixed(2)}`);
 
     // update mixer
     if (mixer !== null){
@@ -608,10 +797,22 @@ const tick = () =>{
     //更新控制
     controls.update()
 
-
+    const raycaster = new Raycaster()
     for(const point of points){
         const screenPosition = point.position.clone()
         screenPosition.project(camera)
+
+        raycaster.setFromCamera(screenPosition,camera)
+        const intersects = raycaster.intersectObjects(scene.children,true)
+
+        // if(intersects.length === 0)
+        // {
+        //     point.element.classList.add('visible')
+        // }else
+        // {
+        //     const intersectionDistance = intersects[0].distance
+        //     point.element.classList.remove('visible')
+        // }
 
         const translateX = screenPosition.x * sizes.width * 0.5
         const translateY = -screenPosition.y * sizes.height * 0.5

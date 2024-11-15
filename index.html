@@ -10,17 +10,26 @@
     <script type="module" src="script.js"></script>
     <div class="loading-bar"></div>
 
-    <div class="point point-0 visible">
+    <div class="point point-0 visible " data-index="0">
         <div class="label">1</div>
         <div class="text">学生活动中心</div>
     </div>
 
-    <div class="point point-1">
-
+    <div class="point point-1 visible" data-index="1">
+        <div class="label">2</div>
+        <div class="text">教务处</div>
     </div>
 
     <div class="point point-2">
 
+    </div>
+
+    <div id="info-panel" class="info-panel">
+        <div id="info-content">
+            <h2>Interest Point Information</h2>
+            <p id="info-description">Details about the interest point will be displayed here.</p>
+            <button id="close-button">Close</button>
+        </div>
     </div>
 
 </body>

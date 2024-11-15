@@ -88,3 +88,63 @@ body{
     opacity: 0;
     backdrop-filter: blur(10px);
 }
+
+#info-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 33%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: white;
+    padding: 20px;
+    display: none;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    backdrop-filter: blur(8px);
+    transform: scaleX(0);
+    transform-origin: top right;
+    transition: transform 1s;
+    will-change: transform;
+
+}
+
+#info-panel.active {
+    opacity: 1; /* 变为不透明 */
+    transform: translateX(0); /* 滑入视图 */
+}
+
+#info-content {
+    white-space: pre-line;
+    position: relative;
+}
+
+#info-content h2 {
+    margin-left: 10px;
+    white-space: pre-line;
+    margin-top: 24%;
+    margin-bottom: 20px;
+}
+
+#info-content p {
+    margin-left: 10px;
+    white-space: pre-line;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+#info-content button {
+    position: absolute;
+    top: 100%;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: -1px 0 5px rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: background-color 0.3s;
+}
