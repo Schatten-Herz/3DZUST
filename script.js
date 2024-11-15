@@ -516,7 +516,7 @@ window.addEventListener('dblclick', () => {
 /*
 camera
  */
-const camera = new THREE.PerspectiveCamera(45,sizes.width / sizes.height,0.1,10000)
+const camera = new THREE.PerspectiveCamera(40,sizes.width / sizes.height,0.1,10000)
 camera.position.z = -405
 camera.position.y = 60
 camera.position.x = 375
@@ -543,10 +543,11 @@ const points = [
     {
         position: new THREE.Vector3(620, 30, -425),
         element: document.querySelector('.point-0'),
-        cameraPosition: new THREE.Vector3(634, 40, -480), // 摄像机移动到的位置
-        lookAt: new THREE.Vector3(605, 25, -430) // 摄像机朝向的位置
+        cameraPosition: new THREE.Vector3(656, 20, -450), // 摄像机移动到的位置
+        lookAt: new THREE.Vector3(610, 25, -425) // 摄像机朝向的位置
     }
 ];
+
 const points0Position = gui.addFolder('Points0');
 
 if (points[0].position) {
@@ -556,6 +557,7 @@ if (points[0].position) {
 } else {
     console.error("Position is not defined properly.");
 }
+
 
 points.push({
     position: new THREE.Vector3(650, 40, -520),
@@ -570,6 +572,24 @@ if (points[1].position) {
     points1Position.add(points[1].position, 'x').min(-1000).max(1000).step(0.01);
     points1Position.add(points[1].position, 'y').min(-1000).max(1000).step(0.01);
     points1Position.add(points[1].position, 'z').min(-1000).max(1000).step(0.01);
+} else {
+    console.error("Position for the second point is not defined properly.");
+}
+
+
+points.push({
+    position: new THREE.Vector3(560, 35, -395),
+    element: document.querySelector('.point-2'),
+    cameraPosition: new THREE.Vector3(527,30,-507),
+    lookAt: new THREE.Vector3(560, 35, -395)
+});
+
+const points2Position = gui.addFolder('Points2');
+
+if (points[2].position) {
+    points2Position.add(points[2].position, 'x').min(-1000).max(1000).step(0.01);
+    points2Position.add(points[2].position, 'y').min(-1000).max(1000).step(0.01);
+    points2Position.add(points[2].position, 'z').min(-1000).max(1000).step(0.01);
 } else {
     console.error("Position for the second point is not defined properly.");
 }
@@ -589,16 +609,22 @@ function closeInfoPanel() {
 document.addEventListener('DOMContentLoaded', () => {
     const pointsInfo = [
         {
-            title: '水晶剧院-学生活动中心',
-            description: '水晶剧院-学生活动中心 \n' + '\n' +
-                'Crystal Theater-Student Activity Center \n' + '\n' +
-                'Kristalltheater - Zentrum für studentische Aktivitäten.'
+            title: '学生活动中心',
+            description: '学生活动中心 \n' + '\n' +
+                'Student Activity Center \n' + '\n' +
+                'Zentrum für studentische Aktivitäten.'
         },
         {
             title: '教务处',
             description: '教务处 \n' + '\n' +
                 'Academic Affairs Office \n' + '\n' +
                 'Büro für akademische Angelegenheiten'
+        },
+        {
+            title: '水晶剧院',
+            description: '水晶剧院 \n' + '\n' +
+                'Crystal Theater \n' + '\n' +
+                'Kristalltheater'
         }
     ];
     const infoDescription = document.getElementById('info-description');
