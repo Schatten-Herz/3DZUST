@@ -14,6 +14,7 @@ import {timerDelta} from "three/tsl";
 import index from "dat.gui";
 
 
+
 /*
 Texture
  */
@@ -176,6 +177,7 @@ gltfLoader.load(
         //
         // scene.add(model);
         })
+
 
 
 
