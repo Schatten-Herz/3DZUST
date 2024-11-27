@@ -12,6 +12,43 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { EXRLoader } from "three/addons";
 import {timerDelta} from "three/tsl";
 import index from "dat.gui";
+import * as http from "node:http";
+
+/*
+*
+ Minio
+*/
+// const Minio = require('minio');
+//
+// let minioClient;
+//
+// function initMinio(host, port, useSSL = false, accessKey, secretKey, option = {}) {
+//     // 检查参数是否为空
+//     if (!host || !port || !accessKey || !secretKey) {
+//         throw new Error('Please provide all required parameters: host, port, accessKey, and secretKey.');
+//     }
+//
+//     // 初始化 MinIO 客户端
+//     minioClient = new Minio.Client({
+//         endPoint: host, // 主机域名或 IP 地址
+//         port: port, // 使用 MinIO 对象存储的端口，通常是 9000
+//         useSSL: useSSL, // 根据需求设置是否启用 SSL
+//         accessKey: accessKey, // MinIO 的访问密钥
+//         secretKey: secretKey, // MinIO 的秘密密钥
+//         ...option
+//     });
+//
+//     return minioClient;
+// }
+//
+// // 使用示例
+// const host = '8.154.34.149';
+// const port = 9000; // 修改为对象存储的正确端口
+// const useSSL = false; // 如果您不需要 HTTPS，则为 false
+// const accessKey = process.env.MINIO_ACCESS_KEY || '7s82Kx7yqqQAdaZmMMCM';
+// const secretKey = process.env.MINIO_SECRET_KEY || 'qMq1mPEtcpjfwHEpYq3UT2gQM9dKUDJ1kbibVt0z';
+//
+// minioClient = initMinio(host, port, useSSL, accessKey, secretKey);
 
 
 
@@ -58,6 +95,7 @@ const loadingBarElement = document.querySelector(".loading-bar");
 const infoPanelElement = document.querySelector("#info-panel");
 
 const cubeTextureLoader = new THREE.CubeTextureLoader(loadingManager)
+cubeTextureLoader.setCrossOrigin('anonymous')
 
 const exrLoader = new EXRLoader(loadingManager)
 const gltfLoader = new GLTFLoader(loadingManager);
@@ -111,12 +149,12 @@ HDRI
  */
 const environmentMap = cubeTextureLoader.load(
     [
-        'src/assets/textures/environmentMaps/nocloud/px.png',
-        'src/assets/textures/environmentMaps/nocloud/nx.png',
-        'src/assets/textures/environmentMaps/nocloud/py.png',
-        'src/assets/textures/environmentMaps/nocloud/ny.png',
-        'src/assets/textures/environmentMaps/nocloud/pz.png',
-        'src/assets/textures/environmentMaps/nocloud/nz.png']
+        'http://8.154.34.149:9000/three/assets/textures/environmentMaps/nocloud/px.png',
+        'http://8.154.34.149:9000/three/assets/textures/environmentMaps/nocloud/nx.png',
+        'http://8.154.34.149:9000/three/assets/textures/environmentMaps/nocloud/py.png',
+        'http://8.154.34.149:9000/three/assets/textures/environmentMaps/nocloud/ny.png',
+        'http://8.154.34.149:9000/three/assets/textures/environmentMaps/nocloud/pz.png',
+        'http://8.154.34.149:9000/three/assets/textures/environmentMaps/nocloud/nz.png']
 )
 
 scene.environment = environmentMap
@@ -162,7 +200,7 @@ Models
 let mixer = null
 
 gltfLoader.load(
-    'src/assets/ZUST/12-2-applydem.gltf',
+    'http://8.154.34.149:9000/three/assets/ZUST/12-2-applydem.gltf',
     (gltf) => {
         // 全部加载
         const children = [...gltf.scene.children];
@@ -180,112 +218,9 @@ gltfLoader.load(
 
 
 
-
 //fog
 // const fog = new THREE.Fog('#262837',1,15)
 // scene.fog = fog
-
-
-/*
-basic
- */
-// const material = new THREE.MeshBasicMaterial()
-// material.map = doorColorTexture
-// material.transparent = true
-// material.alphaMap = doorAlphaTexture
-
-
-// const material = new THREE.MeshLambertMaterial()
-
-// const material = new THREE.MeshPhongMaterial()
-// material.shininess = 200
-// material.specular = new THREE.Color(0xff0000)
-
-// const material = new THREE.MeshToonMaterial()
-// material.gradientMap = gradientTextures
-
-
-// material.map = doorColorTexture
-// material.aoMap = doorAmbientOcclusionTexture
-// material.displacementMap = doorHeightTexture
-// material.displacementScale = 0.1
-// material.metalnessMap = doorMetalnessTexture
-// material.roughnessMap = doorRoughnessTexture
-// material.normalMap = doorNormalTexture
-// material.normalScale.set(0.8,0.8)
-// material.alphaMap = doorAlphaTexture
-// material.transparent = true
-
-
-// const material = new THREE.MeshStandardMaterial({color:'#8baf71'})
-// material.metalness = 0
-// material.roughness = 0.8
-// // material.envMap = environmentMapTexture
-//
-// material.side = THREE.DoubleSide
-//
-// gui.add(material,'metalness').min(0).max(1).step(0.001)
-// gui.add(material,'roughness').min(0).max(1).step(0.001)
-// gui.add(material,'displacementScale').min(0).max(1).step(0.001)
-
-// const sphere = new THREE.Mesh(
-//     new THREE.SphereGeometry(0.5,256,256),
-//     material
-// )
-// sphere.castShadow = true
-// sphere.receiveShadow = true
-//
-// sphere.geometry.setAttribute(              //uv处理
-//     'uv2',
-//     new THREE.BufferAttribute(sphere.geometry.attributes.uv.array,2)
-// )
-//
-// scene.add(sphere)
-
-
-/*
-Raycaster
- */
-
-// const raycaster = new THREE.Raycaster()
-//
-// const rayOrigin = new THREE.Vector3(-3,0,0)
-// const rayDirection = new THREE.Vector3(10,0,0)
-// rayDirection.normalize()
-//
-// raycaster.set(rayOrigin,rayDirection)
-//
-// const intersect = raycaster.intersectObject(cube2)
-//
-// const intersects = raycaster.intersectObjects([cube,cube2,cube3])
-// console.log(intersects)
-
-// const plane = new THREE.Mesh(
-//     new THREE.PlaneGeometry(20,20,256,256),
-//     new THREE.MeshStandardMaterial(
-//         {
-//     side: THREE.DoubleSide
-    //         map: grassColorTexture,
-    //         aoMap: grassAmbientOcclusionTexture,
-    //         normalMap: grassNormalTexture,
-    //         roughnessMap: grassRoughnessTexture,
-//         }
-//     )
-// )
-// plane.geometry.setAttribute(              //uv处理
-//     'uv2',
-//     new THREE.Float32BufferAttribute(plane.geometry.attributes.uv.array,2)
-// )
-// plane.rotation.x =- Math.PI / 2
-// plane.position.y = -0.5
-// scene.add(plane)
-
-
-
-/*
-House
- */
-
 
 
 /*
@@ -294,85 +229,6 @@ Lights
 const ambientLight = new THREE.AmbientLight('#fffff9',2)
 scene.add(ambientLight)
 gui.add(ambientLight,'intensity').min(0.01).max(5).step(0.001)
-//
-//
-// const directionalLight = new THREE.DirectionalLight('#fdfcf8',2)
-// directionalLight.position.set(4,5,-2)
-// scene.add(directionalLight)
-// // gui.add(directionalLight,'intensity').min(0.01).max(5).step(0.001)
-// directionalLight.castShadow = false
-
-// directionalLight.shadow.mapSize.width = 1024
-// directionalLight.shadow.mapSize.height = 1024
-// directionalLight.shadow.camera.near = 1
-// directionalLight.shadow.camera.far = 10
-// directionalLight.shadow.camera.top = 3
-// directionalLight.shadow.camera.right = 3
-// directionalLight.shadow.camera.bottom = -3
-// directionalLight.shadow.camera.left = -3
-// directionalLight.shadow.radius = 5
-
-// const directionalLightCameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera)
-// directionalLightCameraHelper.visible = false
-// scene.add(directionalLightCameraHelper)
-
-
-//
-// const doorLight = new THREE.PointLight('#ff7d46', 5,7)
-// doorLight.position.set(0,2.1,2.7)
-// scene.add(doorLight)
-
-
-
-// const hemisphereLight = new THREE.HemisphereLight(0xff0000,0x0000ff,2)  //顶光和地面光
-// scene.add(hemisphereLight)
-// gui.add(hemisphereLight,'intensity').min(0.01).max(5).step(0.001)
-
-
-//pointLight
-// const pointLight = new THREE.PointLight(0xffffff,9,20)  //点光源
-// pointLight.position.set(0,3,0)
-// gui.add(pointLight,'intensity').min(0.01).max(5).step(0.001)
-//
-// pointLight.castShadow = false
-// pointLight.shadow.mapSize.width = 1024
-// pointLight.shadow.mapSize.height = 1024
-// pointLight.shadow.camera.near = 1
-// pointLight.shadow.camera.far = 6
-//
-// scene.add(pointLight)
-//
-// const pointLightCameraHelper = new THREE.CameraHelper(pointLight.shadow.camera)
-// pointLightCameraHelper.visible = false
-// scene.add(pointLightCameraHelper)
-//
-//
-// const rectAreaLight = new THREE.RectAreaLight(0x4e00ff,10,3,1)  //面光
-// rectAreaLight.position.set(1,2,0)
-// scene.add(rectAreaLight)
-// rectAreaLight.lookAt(new THREE.Vector3(0,0,1))
-// gui.add(rectAreaLight,'intensity').min(0.01).max(10).step(0.001)
-
-
-//spotlight
-// const spotLight = new THREE.SpotLight(0x78ff00,10,15,Math.PI * 0.1,0.25,1)  //聚光灯   penumbra:散光
-// spotLight.position.set(0,2,-3)
-// spotLight.target.position.x = 0.5
-//
-// spotLight.castShadow = false
-// spotLight.shadow.mapSize.width = 1024
-// spotLight.shadow.mapSize.height = 1024
-// spotLight.shadow.camera.near = 1
-// spotLight.shadow.camera.far = 8
-// spotLight.shadow.camera.fov = 60
-//
-// scene.add(spotLight)
-// scene.add(spotLight.target)
-//
-// const spotLightCameraHelper = new THREE.CameraHelper(spotLight.shadow.camera)
-// spotLightCameraHelper.visible = false
-// scene.add(spotLightCameraHelper)
-
 
 //LightHelpers
 // const hemisphereLighterHelper = new THREE.HemisphereLightHelper(hemisphereLight,0.2)
@@ -400,19 +256,7 @@ GUI
 //     gsap.to(cube1.rotation,{y:cube1.rotation.y + Math.PI * 2})
 // }
 // cubeTweaks.add(debugObject,'spin')
-//
-// debugObject.subdivision = 2
-// cubeTweaks.add(debugObject,'subdivision')
-//     .min(1)
-//     .max(20)
-//     .step(1)
-//     .onFinishChange(() =>{
-//         cube1.geometry.dispose()
-//         cube1.geometry = new THREE.BoxGeometry(
-//             1,1,1,
-//             debugObject.subdivision,debugObject.subdivision,debugObject.subdivision
-//         )
-//     })
+//    })
 
 
 //axes helper
@@ -429,7 +273,8 @@ OverLay
  */
 //video material
 const video = document.createElement('video');
-video.src = 'src/assets/video/output_vp9.webm';
+video.src = 'http://8.154.34.149:9000/three/assets/video/output_vp9.webm';
+video.crossOrigin = 'anonymous';
 video.autoplay = true;
 video.loop = false;
 video.muted = true;

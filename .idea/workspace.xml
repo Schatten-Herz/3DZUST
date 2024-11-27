@@ -6,9 +6,76 @@
   <component name="ChangeListManager">
     <list default="true" id="45357efd-26f8-4c03-92f7-8dfcbfe226f5" name="更改" comment="1">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/ZUST/12-2-applydem.bin" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/ZUST/12-2-applydem.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/assets/ZUST/12-2-applydem.gltf" beforeDir="false" afterPath="$PROJECT_DIR$/src/assets/ZUST/12-2-applydem.gltf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/bricks/ambientOcclusion.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/bricks/color.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/bricks/normal.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/bricks/roughness.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/checkerboard-1024x1024.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/checkerboard-8x8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/door/alpha.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/door/ambientOcclusion.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/door/color.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/door/height.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/door/metalness.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/door/normal.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/door/roughness.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/0/nx.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/0/ny.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/0/nz.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/0/px.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/0/py.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/0/pz.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/1/nx.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/1/ny.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/1/nz.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/1/px.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/1/py.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/1/pz.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/2/nx.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/2/ny.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/2/nz.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/2/px.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/2/py.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/2/pz.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/3/nx.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/3/ny.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/3/nz.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/3/px.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/3/py.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/environmentMaps/3/pz.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/gradients/3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/gradients/5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/grass/ambientOcclusion.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/grass/color.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/grass/normal.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/grass/roughness.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/matcaps/1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/matcaps/2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/matcaps/3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/matcaps/4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/matcaps/5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/matcaps/6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/matcaps/7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/matcaps/8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/minecraft.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/particles/1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/particles/10.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/particles/11.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/particles/12.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/particles/13.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/particles/2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/particles/3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/particles/4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/particles/5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/particles/6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/particles/7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/particles/8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/particles/9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/shadows/bakedShadow.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/textures/shadows/simpleShadow.jpg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,6 +130,11 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.highlight.mappings&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.highlight.symlinks&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.show.date&quot;: &quot;false&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.show.permissions&quot;: &quot;false&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.show.size&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;G:/3jsPro/per/src/assets/video&quot;,
@@ -75,7 +147,7 @@
     &quot;project.structure.last.edited&quot;: &quot;SDK&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.4091954&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.web.browsers&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;web.server&quot;,
     &quot;ts.external.directory.path&quot;: &quot;D:\\APPS\\IntelliJ IDEA 243.21155.17\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -96,8 +168,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.21565.193" />
-        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-IU-243.21565.193" />
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.13" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.13" />
       </set>
     </attachedChunks>
   </component>
@@ -152,6 +224,10 @@
       <workItem from="1731639020053" duration="20925000" />
       <workItem from="1731976737494" duration="13648000" />
       <workItem from="1732063424563" duration="7459000" />
+      <workItem from="1732174317617" duration="378000" />
+      <workItem from="1732674251301" duration="1933000" />
+      <workItem from="1732677930603" duration="1253000" />
+      <workItem from="1732688592283" duration="6191000" />
     </task>
     <task id="LOCAL-00001" summary="1">
       <option name="closed" value="true" />
@@ -417,7 +493,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731664646900</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="1">
+      <option name="closed" value="true" />
+      <created>1732174520357</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1732174520357</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

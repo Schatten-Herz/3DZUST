@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="c758c600-8cc1-48fc-839d-8563e1e59216" name="three_dep">
+        <fileTransfer rootFolder="/three_project" accessType="SFTP" host="8.154.34.149" port="22" sshConfigId="b86b398d-2837-4761-a37e-5b31e25d47f0" sshConfig="root@8.154.34.149:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
